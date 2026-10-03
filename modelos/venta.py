@@ -1,14 +1,16 @@
 from datetime import datetime
 
 class Venta:
-    def __init__(self, usuario_id, producto_id, cantidad, fecha=None):
+    def __init__(self, id, usuario_id, producto_id, cantidad):
+        self.id = id
         self.usuario_id = usuario_id
         self.producto_id = producto_id
         self.cantidad = cantidad
-        self.fecha = fecha if fecha else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def to_dict(self):
         return {
+            "id": self.id,
             "usuario_id": self.usuario_id,
             "producto_id": self.producto_id,
             "cantidad": self.cantidad,
@@ -18,8 +20,8 @@ class Venta:
     @classmethod
     def from_dict(cls, datos):
         return cls(
-            datos["usuario_id"],
-            datos["producto_id"],
-            datos["cantidad"],
-            datos.get("fecha")
+            id=datos["id"],
+            usuario_id=datos["usuario_id"],
+            producto_id=datos["producto_id"],
+            cantidad=datos["cantidad"]
         )

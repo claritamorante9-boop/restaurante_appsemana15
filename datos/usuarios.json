@@ -1,3 +1,14 @@
 [
-    {"id": 1, "nombre": "admin", "contrasena": "1234"}
+    {
+        "id": 1,
+        "nombre": "admin",
+        "contrasena": "1234",
+        "rol": "Administrador"
+    },
+    {
+        "id": 2,
+        "nombre": "empleado1",
+        "contrasena": "1234",
+        "rol": "Empleado"
+    }
 ]

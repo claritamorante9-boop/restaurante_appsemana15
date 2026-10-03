@@ -1,58 +1,60 @@
-#  Restaurante App — Sistema de Ventas
-**Semana 15** — Proyecto de Registro y Gestión de Ventas
+#Restaurante App — Sistema de Ventas
+**Semana 16** — Gestión de Usuarios y Manejo de Eventos
 
-##  Descripción
-Aplicación de escritorio desarrollada en Python con Tkinter para el registro de ventas de un restaurante. Permite iniciar sesión, seleccionar productos, registrar ventas y visualizar el historial completo con fecha y hora. Los datos se guardan automáticamente en archivos JSON.
+#Descripción
+Aplicación de escritorio en Python con Tkinter para gestión de ventas de restaurante. Evolutiva: conserva funciones anteriores y agrega administración de usuarios con roles y manejo de eventos.
 
-## Funcionalidades
--  Inicio de sesión con usuario y contraseña
--  Selección de usuario
--  Catálogo de productos con precios
--  Registro de ventas con cantidad
--  Historial de ventas en tabla con:
-  - Usuario
-  - Producto
-  - Cantidad
-  - Fecha y hora
--  Guardado automático en archivos JSON
--  Logo personalizado de la aplicación
--  Carga de datos persistente al abrir la app
+#Funcionalidades
 
-##  Tecnologías
-- **Python 3**
-- **Tkinter** — Interfaz gráfica
-- **Pillow** — Manejo de imágenes
-- **JSON** — Almacenamiento de datos
+#Generales
+-  Inicio de sesión con validación
+- Registro de ventas con historial
+- Persistencia en archivos JSON
+- Logo personalizado
 
-##  Estructura del Proyecto
-restaurante-app-semana15/
-├── assets/
-│ └── logo.png
+#Semana 16 — Gestión de Usuarios
+- **Roles:** Administrador / Empleado / Cliente
+-  Solo **Administrador** ve y gestiona la sección de Usuarios
+-  Registrar, Consultar, Actualizar y Eliminar usuarios
+-  Tabla `Treeview` con ID, Nombre y Rol
+-**Eventos implementados:**
+  - `<<TreeviewSelect>>` → carga datos al formulario
+  - `<Return>` → Registrar con tecla Enter
+  - `<Escape>` → Limpiar formulario
+  - `<<ComboboxSelected>>` → detecta cambio de rol
+-  No permite eliminarse a sí mismo
+-  Confirmación antes de eliminar
+
+#Estructura
+restaurante_appsemana15/
+├── assets/logo.png
 ├── datos/
 │ ├── usuarios.json
 │ ├── productos.json
 │ └── ventas.json
 ├── modelos/
-│ ├── init.py
-│ ├── usuario.py
+│ ├── usuario.py ← atributo rol
 │ ├── producto.py
 │ └── venta.py
 ├── servicios/
-│ ├── init.py
-│ └── restaurante_servicio.py
+│ └── restaurante_servicio.py ← lógica y persistencia
 ├── ui/
-│ ├── init.py
 │ ├── login_view.py
-│ └── main_view.py
+│ └── main_view.py ← eventos y pestañas
 ├── main.py
 └── README.md
 
-#Instalación y Ejecución
-
- 1. Instalar dependencias
+##Ejecución
 ```bash
 pip install pillow
 python main.py
-3. Credenciales de acceso
+Credenciales:
 Usuario: admin
 Contraseña: 1234
+Rol: Administrador 
+Flujo
+Inicio → Login → MainView
+Administrador ve pestaña Gestión de Usuarios
+Seleccionar fila → datos cargados → Actualizar/Eliminar
+Enter = Registrar | Escape = Limpiar
+Cambios guardados en usuarios.json

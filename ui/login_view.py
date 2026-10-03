@@ -1,38 +1,46 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 
 class LoginView:
-    def __init__(self, ventana, servicio, on_success):
+    def __init__(self, ventana, servicio):
         self.ventana = ventana
         self.servicio = servicio
-        self.on_success = on_success
-        self.frame = tk.Frame(ventana, bg="#f0f0f0")
-        self.frame.pack(expand=True)
+        self.ventana.title("Restaurante App — Iniciar Sesión")
+        self.ventana.geometry("350x220")
+        self.ventana.resizable(False, False)
+        
+        self._construir()
 
-        contenedor = tk.Frame(self.frame, bg="white", bd=2, relief="groove")
-        contenedor.pack(padx=40, pady=40)
+    def _construir(self):
+        marco = ttk.Frame(self.ventana, padding=25)
+        marco.pack(fill="both", expand=True)
 
-        tk.Label(contenedor, text="Restaurante App", font=("Arial", 18, "bold"), bg="white").pack(pady=(20, 10))
-        tk.Label(contenedor, text="Iniciar Sesión", font=("Arial", 12), bg="white").pack(pady=(0, 20))
+        ttk.Label(marco, text="Restaurante App", font=("Arial", 14, "bold")).pack(pady=(0, 20))
 
-        tk.Label(contenedor, text="Usuario", bg="white").pack()
-        self.entrada_usuario = tk.Entry(contenedor, width=30)
-        self.entrada_usuario.pack(pady=(0, 10))
+        ttk.Label(marco, text="Usuario:").pack(anchor="w")
+        self.ent_usuario = ttk.Entry(marco, width=35)
+        self.ent_usuario.pack(pady=(0, 10))
+        self.ent_usuario.insert(0, "admin")
 
-        tk.Label(contenedor, text="Contraseña", bg="white").pack()
-        self.entrada_contrasena = tk.Entry(contenedor, width=30, show="*")
-        self.entrada_contrasena.pack(pady=(0, 20))
+        ttk.Label(marco, text="Contraseña:").pack(anchor="w")
+        self.ent_clave = ttk.Entry(marco, width=35, show="*")
+        self.ent_clave.pack(pady=(0, 15))
+        self.ent_clave.insert(0, "1234")
 
-        tk.Button(contenedor, text="Ingresar", width=20, command=self._ingresar).pack(pady=(0, 10))
+        ttk.Button(marco, text="Ingresar", command=self._ingresar).pack(fill="x", pady=5)
 
     def _ingresar(self):
-        usuario = self.entrada_usuario.get().strip()
-        contrasena = self.entrada_contrasena.get().strip()
-        u = self.servicio.validar_acceso(usuario, contrasena)
-        if u:
-            self.on_success(u)
+        usuario = self.ent_usuario.get().strip()
+        clave = self.ent_clave.get().strip()
+        
+        ok, u = self.servicio.iniciar_sesion(usuario, clave)
+        
+        if ok:
+            self.ventana.destroy()
+            from ui.main_view import MainView
+            ventana_principal = tk.Tk()
+            ventana_principal.geometry("850x550")
+            MainView(ventana_principal, self.servicio, u)
+            ventana_principal.mainloop()
         else:
             messagebox.showerror("Error", "Usuario o contraseña incorrectos")
-
-    def destruir(self):
-        self.frame.destroy()
